@@ -1,0 +1,7 @@
+{
+  "name": "Atatürk ile Röportaj",
+  "description": "Kurtuluş Savaşı dönemi hakkında Mustafa Kemal Atatürk ile birinci şahıs tarih röportajı ve eğitim chatbotu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
