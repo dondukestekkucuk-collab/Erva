@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { BookOpen, Calendar, Download, Volume2, VolumeX, Sparkles, Award } from 'lucide-react';
+import { BookOpen, Calendar, Download, Volume2, VolumeX, Sparkles, LogOut, User } from 'lucide-react';
 
 interface HeaderProps {
   onOpenTimeline: () => void;
@@ -11,6 +11,8 @@ interface HeaderProps {
   onToggleTts: () => void;
   onExportReport: () => void;
   messageCount: number;
+  userName?: string;
+  onLogout?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -21,6 +23,8 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleTts,
   onExportReport,
   messageCount,
+  userName,
+  onLogout,
 }) => {
   return (
     <header className="border-b border-stone-800 bg-stone-950/90 backdrop-blur-md sticky top-0 z-30 px-4 py-3 sm:px-6">
@@ -103,6 +107,26 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Download className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Ödev Raporu Al</span>
+            </button>
+          )}
+
+          {/* User info & Logout */}
+          {userName && (
+            <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-stone-900 border border-stone-800 text-xs text-amber-300 font-medium">
+              <User className="w-3.5 h-3.5 text-amber-400" />
+              <span className="max-w-[120px] truncate">{userName}</span>
+            </div>
+          )}
+
+          {onLogout && (
+            <button
+              id="logout-btn"
+              onClick={onLogout}
+              title="Oturumu Kapat / Çıkış Yap"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-red-950/50 hover:bg-red-900/60 text-red-300 hover:text-red-200 border border-red-800/50 transition-all shadow-sm"
+            >
+              <LogOut className="w-3.5 h-3.5 text-red-400" />
+              <span>Çıkış Yap</span>
             </button>
           )}
         </div>

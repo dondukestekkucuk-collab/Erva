@@ -29,12 +29,40 @@ export default function Home() {
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [isTtsEnabled, setIsTtsEnabled] = useState(false);
+  const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null);
   const [savedNotes, setSavedNotes] = useLocalStorage<SavedNote[]>('ataturk_roportaj_notes', []);
   const [studentName, setStudentName] = useLocalStorage<string>('ataturk_roportaj_student', '');
   const [schoolName, setSchoolName] = useLocalStorage<string>('ataturk_roportaj_school', '');
   const [classNameVal, setClassNameVal] = useState('');
   const [studentNumber, setStudentNumber] = useState('');
   const [personalNotes, setPersonalNotes] = useState('');
+
+  // Fetch logged in user info
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.user) {
+          setCurrentUser(data.user);
+          if (!studentName) {
+            setStudentName(data.user.name);
+          }
+        }
+      })
+      .catch((err) => console.error('Failed to get user session:', err));
+  }, []);
+
+  // Handle Logout
+  const handleLogout = async () => {
+    if (window.confirm('Oturumu kapatıp çıkış yapmak istediğinize emin misiniz?')) {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+      } catch (e) {
+        console.error('Logout error:', e);
+      }
+      window.location.href = '/giris';
+    }
+  };
 
   // Modals
   const [isTimelineOpen, setIsTimelineOpen] = useState(false);
@@ -194,6 +222,8 @@ export default function Home() {
         }}
         onExportReport={() => setIsReportOpen(true)}
         messageCount={messages.length}
+        userName={currentUser?.name}
+        onLogout={handleLogout}
       />
 
       {/* Main Conversation Container */}
